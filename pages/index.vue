@@ -1,20 +1,18 @@
 <template>
   <section class="container">
     <div>
-      <app-logo/>
-      <h1 class="display-4">
-        工事中
-      </h1>
+      <!--  -->
     </div>
   </section>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
-
 export default {
-  components: {
-    AppLogo
+  async mounted() {
+    console.log(
+      JSON.stringify(await this.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js'),true, '')
+      )
+      
   }
 }
 </script>
