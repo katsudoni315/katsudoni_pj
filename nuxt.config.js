@@ -21,7 +21,9 @@ module.exports = {
    * axiosプロパティの設定
    */
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'bootstrap-vue/nuxt'
+
   ],
   axios: {
 
