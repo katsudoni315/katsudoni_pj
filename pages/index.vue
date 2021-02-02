@@ -1,17 +1,29 @@
 <template>
   <section class="container">
-      <h1 class="h1">Nuxt Bootstrap</h1>
-      <b-button variant="primary">Primary Button</b-button>
+    <b-card class="main-card">
+      <b-card-title>{{ homeTitle }}</b-card-title>
+      <b-card-body>
+        千里の道も一歩より
+      </b-card-body>
+    </b-card>
   </section>
 </template>
 
 <script>
 export default {
+  data: () => ({  
+    qiitaData: Array,
+    homeTitle: String,
+
+  }),
+
   async mounted() {
-    console.log(
-      JSON.stringify(await this.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js'),true, '')
-      )
-      
+    
+  },
+
+  async created (){
+    this.homeTitle = 'MIURA PAGE'
+    this.qiitaData = JSON.stringify(await this.$axios.$get('https://qiita.com/api/v2/items?query=tag:nuxt.js'),true, '')
   }
 }
 </script>
@@ -44,6 +56,11 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+
+.main-card {
+  width: 100%;
+  height: 100%;
 }
 </style>
 
