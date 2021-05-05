@@ -1,20 +1,68 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="display-4">
-        工事中
-      </h1>
-    </div>
-  </section>
+  <b-container>
+        <b-row >
+            <b-col>
+              <b-card :img-src="weatherItem.image"
+              overlay>
+                <b-card-header block>
+                  <b-card-title>{{ weatherItem.city }}の天気</b-card-title>
+                </b-card-header>
+                <b-card-body>
+                  <b-img :src="weatherItem.icon"></b-img>
+                <b-card-sub-title class="p-3 bg-info text-white">{{ weatherItem.weather }}</b-card-sub-title>
+                  <b-card-text>
+                    <p>現在の気温:　{{ weatherItem.maxTemp }}℃</p>
+                  </b-card-text>
+                </b-card-body>
+              </b-card>
+            </b-col>
+        </b-row>
+  </b-container>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
-
+import cloudsImage from '@/static/pr00153-640x480.jpg'
 export default {
-  components: {
-    AppLogo
+  data: () => ({  
+    qiitaData: [],
+    homeTitle: '',
+    oWobj: {},
+    weatherItem: {
+      city: '',
+      image: '',
+      weather: '',
+      maxTemp: 0,
+      minTemp: 0
+    }
+
+  }),
+
+  async created() {
+    this.homeTitle = 'MIURA PAGE'
+    const apiKey = "5f75aaa751fc6d370dbd9c2744a0e75f"
+    const city = 'Utsunomiya'
+    const iconPass = 'http://openweathermap.org/img/w/'
+
+    this.oWobj = await this.$axios.$get('http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&units=metric&lang=ja&APPID=' + apiKey)
+    this.weatherItem.city = this.oWobj.city.name
+    
+    this.weatherItem.icon = iconPass + this.oWobj.list[5].weather[0].icon + '.png'
+    this.weatherItem.weather = this.oWobj.list[3].weather[0].description
+    this.weatherItem.minTemp = this.oWobj.list[3].main.temp_min
+    this.weatherItem.maxTemp = this.oWobj.list[3].main.temp_max
+    let imagePass
+    console.log(parseInt(this.oWobj.list[3].weather[0].id))
+    switch (Math.floor(this.oWobj.list[3].weather[0].id / 100)) {
+      case (8):
+        imagePass = cloudsImage
+        break;
+    
+      default:
+        imagePass = '失敗'
+        break;
+    }
+    this.weatherItem.image = imagePass
+
   }
 }
 </script>
@@ -47,6 +95,11 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+
+.main-card {
+  width: 100%;
+  height: 100%;
 }
 </style>
 
